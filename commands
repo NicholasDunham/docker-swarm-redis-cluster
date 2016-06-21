@@ -1,14 +1,15 @@
 token=$(docker run swarm create)
 docker-machine create -d virtualbox --swarm --swarm-master --swarm-discovery token://$token swarm-master
 
-docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db1
-docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db2
-docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db3
-docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db4
-docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db5
-docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db6
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token redis-1
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token redis-2
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token redis-3
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token redis-4
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token redis-5
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token redis-6
 
 docker-machine ls
+docker-machine env --swarm swarm-master
 eval $(docker-machine env --swarm swarm-master)
 
 docker run -v <PATH_TO>/redis.conf:/usr/local/etc/redis/redis.conf -d --net=host --name redis1 redis redis-server /usr/local/etc/redis/redis.conf
