@@ -5,12 +5,12 @@ token=$(docker run swarm create)
 docker-machine create -d virtualbox --swarm --swarm-master --swarm-discovery token://$token swarm-master
 
 # Create six Redis machines to cluster.
-docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db1
-docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db2
-docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db3
-docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db4
-docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db5
-docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db6
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token redis-1
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token redis-2
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token redis-3
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token redis-4
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token redis-5
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token redis-6
 
 # List the machines we've created so far
 docker-machine ls
