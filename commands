@@ -1,0 +1,26 @@
+token=$(docker run swarm create)
+docker-machine create -d virtualbox --swarm --swarm-master --swarm-discovery token://$token swarm-master
+
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db1
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db2
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db3
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db4
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db5
+docker-machine create -d virtualbox --swarm --swarm-discovery token://$token db6
+
+docker-machine ls
+eval $(docker-machine env --swarm swarm-master)
+
+docker run -v <PATH_TO>/redis.conf:/usr/local/etc/redis/redis.conf -d --net=host --name redis1 redis redis-server /usr/local/etc/redis/redis.conf
+docker run -v <PATH_TO>/redis.conf:/usr/local/etc/redis/redis.conf -d --net=host --name redis2 redis redis-server /usr/local/etc/redis/redis.conf
+docker run -v <PATH_TO>/redis.conf:/usr/local/etc/redis/redis.conf -d --net=host --name redis3 redis redis-server /usr/local/etc/redis/redis.conf
+docker run -v <PATH_TO>/redis.conf:/usr/local/etc/redis/redis.conf -d --net=host --name redis4 redis redis-server /usr/local/etc/redis/redis.conf
+docker run -v <PATH_TO>/redis.conf:/usr/local/etc/redis/redis.conf -d --net=host --name redis5 redis redis-server /usr/local/etc/redis/redis.conf
+docker run -v <PATH_TO>/redis.conf:/usr/local/etc/redis/redis.conf -d --net=host --name redis6 redis redis-server /usr/local/etc/redis/redis.conf
+
+docker ps
+docker info
+
+./redis-trib.rb create --replicas 1 <redis1_IP>:6379 <redis2_IP>:6379 <redis3_IP>:6379 <redis4_IP>:6379 <redis5_IP>:6379 <redis6_IP>:6379
+redis-cli -c -h <redis1_IP> -p 6379
+
