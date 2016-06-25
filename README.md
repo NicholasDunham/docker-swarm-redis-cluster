@@ -1,5 +1,9 @@
 # Running Redis Cluster on Docker Swarm
 
+These instructions, and the included `redis.conf` file, provide a working Redis Cluster running on Docker Swarm. You should be running recent versions of both Redis and Docker; I'm running Redis v3.2.1 and Docker 1.11.2. If you're using Windows or a Mac, I strongly recommend installing Docker using [Docker Toolbox](https://www.docker.com/products/docker-toolbox).
+
+## Procedure
+
 First, we'll need a swarm discovery token.
 
 ```
@@ -23,7 +27,7 @@ docker-machine create -d virtualbox --swarm --swarm-discovery token://$token red
 docker-machine create -d virtualbox --swarm --swarm-discovery token://$token redis-6
 ```
 
-List the machines we've created so far.
+List the machines we've created so far, taking note of their IP addresses.
 
 ```
 docker-machine ls
@@ -47,15 +51,10 @@ docker run -v <PATH_TO>/redis.conf:/usr/local/etc/redis/redis.conf -d --net=host
 docker run -v <PATH_TO>/redis.conf:/usr/local/etc/redis/redis.conf -d --net=host --name redis6 redis redis-server /usr/local/etc/redis/redis.conf
 ```
 
-List running instances.
+List running instances, making sure all the instances we created in the last step are listed as "Up."
 
 ```
 docker ps
-```
-
-More verbose information about running instances--take note of the IP addresses our Redis intances have been assigned.
-```
-docker info
 ```
 
 redis-trib manages the cluster for us. We'll download it from the Redis GitHub repo.
